@@ -182,7 +182,8 @@ import com.alibaba.druid.sql.parser.SQLSelectParser;
 import com.alibaba.druid.sql.parser.SQLStatementParser;
 import com.alibaba.druid.sql.parser.Token;
 import com.alibaba.druid.util.JdbcConstants;
-
+import com.alibaba.druid.sql.ast.statement.SQLAlterTableAddFulltextIndex;
+import com.alibaba.druid.sql.ast.statement.SQLAlterTableAddSpatialIndex;
 public class MySqlStatementParser extends SQLStatementParser {
 
     private static final String AUTO_INCREMENT = "AUTO_INCREMENT";
@@ -2397,9 +2398,13 @@ public class MySqlStatementParser extends SQLStatementParser {
 
                     stmt.addItem(item);
                 } else if (identifierEquals(FULLTEXT)) {
-                    throw new ParserException("TODO " + lexer.token() + " " + lexer.stringVal());
-                } else if (identifierEquals(SPATIAL)) {
-                    throw new ParserException("TODO " + lexer.token() + " " + lexer.stringVal());
+                	SQLAlterTableAddFulltextIndex item = new SQLAlterTableAddFulltextIndex();
+					item.setParent(stmt);
+					stmt.addItem(item);
+				} else if (identifierEquals(SPATIAL)) {
+					SQLAlterTableAddSpatialIndex item = new SQLAlterTableAddSpatialIndex();
+					item.setParent(stmt);
+					stmt.addItem(item);
                 } else {
                     parseAlterTableAddColumn(stmt);
                 }
